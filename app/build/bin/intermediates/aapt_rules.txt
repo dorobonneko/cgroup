@@ -1,0 +1,4 @@
+# Referenced at /storage/emulated/0/AppProjects/cgroup/app/build/bin/merged/AndroidManifest.xml:28
+-keep class com.moe.cgroup.CgroupProvider { <init>(); }
+# Referenced at /storage/emulated/0/AppProjects/cgroup/app/build/bin/merged/AndroidManifest.xml:18
+-keep class com.moe.cgroup.MainActivity { <init>(); }
