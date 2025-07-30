@@ -11,7 +11,7 @@ public interface CgroupMessage extends android.os.IInterface
     {
       return null;
     }
-    @Override public java.util.List<com.moe.cgroup.entity.CgroupInfo> queryAll() throws android.os.RemoteException
+    @Override public java.util.List<com.moe.cgroup.entity.CgroupInfo> queryAll(int type) throws android.os.RemoteException
     {
       return null;
     }
@@ -26,6 +26,21 @@ public interface CgroupMessage extends android.os.IInterface
     @Override public boolean isCgroupSupport() throws android.os.RemoteException
     {
       return false;
+    }
+    @Override public boolean setFreeze(int uid, int pid, boolean freeze) throws android.os.RemoteException
+    {
+      return false;
+    }
+    @Override public boolean setAppFreeze(int uid, boolean freeze) throws android.os.RemoteException
+    {
+      return false;
+    }
+    @Override public void close() throws android.os.RemoteException
+    {
+    }
+    @Override public java.lang.String readCmdline(int pid) throws android.os.RemoteException
+    {
+      return null;
     }
     @Override
     public android.os.IBinder asBinder() {
@@ -84,7 +99,9 @@ public interface CgroupMessage extends android.os.IInterface
         }
         case TRANSACTION_queryAll:
         {
-          java.util.List<com.moe.cgroup.entity.CgroupInfo> _result = this.queryAll();
+          int _arg0;
+          _arg0 = data.readInt();
+          java.util.List<com.moe.cgroup.entity.CgroupInfo> _result = this.queryAll(_arg0);
           reply.writeNoException();
           _Parcel.writeTypedList(reply, _result, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
           break;
@@ -108,6 +125,45 @@ public interface CgroupMessage extends android.os.IInterface
           boolean _result = this.isCgroupSupport();
           reply.writeNoException();
           reply.writeInt(((_result)?(1):(0)));
+          break;
+        }
+        case TRANSACTION_setFreeze:
+        {
+          int _arg0;
+          _arg0 = data.readInt();
+          int _arg1;
+          _arg1 = data.readInt();
+          boolean _arg2;
+          _arg2 = (0!=data.readInt());
+          boolean _result = this.setFreeze(_arg0, _arg1, _arg2);
+          reply.writeNoException();
+          reply.writeInt(((_result)?(1):(0)));
+          break;
+        }
+        case TRANSACTION_setAppFreeze:
+        {
+          int _arg0;
+          _arg0 = data.readInt();
+          boolean _arg1;
+          _arg1 = (0!=data.readInt());
+          boolean _result = this.setAppFreeze(_arg0, _arg1);
+          reply.writeNoException();
+          reply.writeInt(((_result)?(1):(0)));
+          break;
+        }
+        case TRANSACTION_close:
+        {
+          this.close();
+          reply.writeNoException();
+          break;
+        }
+        case TRANSACTION_readCmdline:
+        {
+          int _arg0;
+          _arg0 = data.readInt();
+          java.lang.String _result = this.readCmdline(_arg0);
+          reply.writeNoException();
+          reply.writeString(_result);
           break;
         }
         default:
@@ -149,13 +205,14 @@ public interface CgroupMessage extends android.os.IInterface
         }
         return _result;
       }
-      @Override public java.util.List<com.moe.cgroup.entity.CgroupInfo> queryAll() throws android.os.RemoteException
+      @Override public java.util.List<com.moe.cgroup.entity.CgroupInfo> queryAll(int type) throws android.os.RemoteException
       {
         android.os.Parcel _data = android.os.Parcel.obtain();
         android.os.Parcel _reply = android.os.Parcel.obtain();
         java.util.List<com.moe.cgroup.entity.CgroupInfo> _result;
         try {
           _data.writeInterfaceToken(DESCRIPTOR);
+          _data.writeInt(type);
           boolean _status = mRemote.transact(Stub.TRANSACTION_queryAll, _data, _reply, 0);
           _reply.readException();
           _result = _reply.createTypedArrayList(com.moe.cgroup.entity.CgroupInfo.CREATOR);
@@ -217,19 +274,98 @@ public interface CgroupMessage extends android.os.IInterface
         }
         return _result;
       }
+      @Override public boolean setFreeze(int uid, int pid, boolean freeze) throws android.os.RemoteException
+      {
+        android.os.Parcel _data = android.os.Parcel.obtain();
+        android.os.Parcel _reply = android.os.Parcel.obtain();
+        boolean _result;
+        try {
+          _data.writeInterfaceToken(DESCRIPTOR);
+          _data.writeInt(uid);
+          _data.writeInt(pid);
+          _data.writeInt(((freeze)?(1):(0)));
+          boolean _status = mRemote.transact(Stub.TRANSACTION_setFreeze, _data, _reply, 0);
+          _reply.readException();
+          _result = (0!=_reply.readInt());
+        }
+        finally {
+          _reply.recycle();
+          _data.recycle();
+        }
+        return _result;
+      }
+      @Override public boolean setAppFreeze(int uid, boolean freeze) throws android.os.RemoteException
+      {
+        android.os.Parcel _data = android.os.Parcel.obtain();
+        android.os.Parcel _reply = android.os.Parcel.obtain();
+        boolean _result;
+        try {
+          _data.writeInterfaceToken(DESCRIPTOR);
+          _data.writeInt(uid);
+          _data.writeInt(((freeze)?(1):(0)));
+          boolean _status = mRemote.transact(Stub.TRANSACTION_setAppFreeze, _data, _reply, 0);
+          _reply.readException();
+          _result = (0!=_reply.readInt());
+        }
+        finally {
+          _reply.recycle();
+          _data.recycle();
+        }
+        return _result;
+      }
+      @Override public void close() throws android.os.RemoteException
+      {
+        android.os.Parcel _data = android.os.Parcel.obtain();
+        android.os.Parcel _reply = android.os.Parcel.obtain();
+        try {
+          _data.writeInterfaceToken(DESCRIPTOR);
+          boolean _status = mRemote.transact(Stub.TRANSACTION_close, _data, _reply, 0);
+          _reply.readException();
+        }
+        finally {
+          _reply.recycle();
+          _data.recycle();
+        }
+      }
+      @Override public java.lang.String readCmdline(int pid) throws android.os.RemoteException
+      {
+        android.os.Parcel _data = android.os.Parcel.obtain();
+        android.os.Parcel _reply = android.os.Parcel.obtain();
+        java.lang.String _result;
+        try {
+          _data.writeInterfaceToken(DESCRIPTOR);
+          _data.writeInt(pid);
+          boolean _status = mRemote.transact(Stub.TRANSACTION_readCmdline, _data, _reply, 0);
+          _reply.readException();
+          _result = _reply.readString();
+        }
+        finally {
+          _reply.recycle();
+          _data.recycle();
+        }
+        return _result;
+      }
     }
     static final int TRANSACTION_getCgroupList = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
     static final int TRANSACTION_queryAll = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);
     static final int TRANSACTION_getUid = (android.os.IBinder.FIRST_CALL_TRANSACTION + 2);
     static final int TRANSACTION_getVersion = (android.os.IBinder.FIRST_CALL_TRANSACTION + 3);
     static final int TRANSACTION_isCgroupSupport = (android.os.IBinder.FIRST_CALL_TRANSACTION + 4);
+    static final int TRANSACTION_setFreeze = (android.os.IBinder.FIRST_CALL_TRANSACTION + 5);
+    static final int TRANSACTION_setAppFreeze = (android.os.IBinder.FIRST_CALL_TRANSACTION + 6);
+    static final int TRANSACTION_close = (android.os.IBinder.FIRST_CALL_TRANSACTION + 7);
+    static final int TRANSACTION_readCmdline = (android.os.IBinder.FIRST_CALL_TRANSACTION + 8);
   }
   public static final java.lang.String DESCRIPTOR = "com.moe.cgroup.CgroupMessage";
   public java.util.List<com.moe.cgroup.entity.CgroupInfo> getCgroupList() throws android.os.RemoteException;
-  public java.util.List<com.moe.cgroup.entity.CgroupInfo> queryAll() throws android.os.RemoteException;
+  public java.util.List<com.moe.cgroup.entity.CgroupInfo> queryAll(int type) throws android.os.RemoteException;
   public int getUid() throws android.os.RemoteException;
   public int getVersion() throws android.os.RemoteException;
   public boolean isCgroupSupport() throws android.os.RemoteException;
+  public boolean setFreeze(int uid, int pid, boolean freeze) throws android.os.RemoteException;
+  public boolean setAppFreeze(int uid, boolean freeze) throws android.os.RemoteException;
+  public void close() throws android.os.RemoteException;
+  public java.lang.String readCmdline(int pid) throws android.os.RemoteException;
   /** @hide */
   static class _Parcel {
     static private <T> T readTypedObject(

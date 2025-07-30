@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <provider
+            android:process=":service"
             android:name=".CgroupProvider"
             android:authorities="com.moe.cgroup"
             android:directBootAware="true"

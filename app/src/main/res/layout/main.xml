@@ -4,7 +4,17 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/empty"
+		android:gravity="center"
+		android:minHeight="52dp"
+		android:textColor="#FF000000"
+		android:textSize="20sp"/>
+
 	<ListView
+		android:layout_below="@id/empty"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:id="@+id/listview"/>

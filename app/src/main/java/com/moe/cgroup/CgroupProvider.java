@@ -22,9 +22,16 @@ public class CgroupProvider extends ContentProvider {
 	public Bundle call(String method, String arg, Bundle extras) {
 		if (method != null)
 			switch (method) {
+                case "quit":
+                    mBinder=null;
+                    break;
 				case "getBinder" :
 					if(mBinder==null)
 						return null;
+                    if(!mBinder.pingBinder()){
+                        mBinder=null;
+                        return null;
+                    }
 					Bundle b=new Bundle();
 					b.putParcelable("binder",new BinderContainer(mBinder));
 					return b;

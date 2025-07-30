@@ -12,10 +12,11 @@ public final class R {
     public static int ic_launcher=0x7f010000;
   }
   public static final class id {
-    public static int icon=0x7f020000;
-    public static int listview=0x7f020001;
-    public static int name=0x7f020002;
-    public static int status=0x7f020003;
+    public static int empty=0x7f020000;
+    public static int icon=0x7f020001;
+    public static int listview=0x7f020002;
+    public static int name=0x7f020003;
+    public static int status=0x7f020004;
   }
   public static final class layout {
     public static int list_item_view=0x7f030000;
